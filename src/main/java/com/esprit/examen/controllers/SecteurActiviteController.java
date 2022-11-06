@@ -1,10 +1,12 @@
 package com.esprit.examen.controllers;
 
 import java.util.List;
+import org.modelmapper.ModelMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.esprit.examen.entities.SecteurActivite;
+import com.esprit.examen.entities.Stock;
 import com.esprit.examen.services.ISecteurActiviteService;
 
 import io.swagger.annotations.Api;
@@ -17,6 +19,8 @@ public class SecteurActiviteController {
 
 	@Autowired
 	ISecteurActiviteService secteurActiviteService;
+	@Autowired
+	private ModelMapper modelMapper;
 	
 	// http://localhost:8089/SpringMVC/secteurActivite/retrieve-all-secteurActivite
 	@GetMapping("/retrieve-all-secteurActivite")
@@ -37,9 +41,12 @@ public class SecteurActiviteController {
 	@PostMapping("/add-secteurActivite")
 	@ResponseBody
 	public SecteurActivite addSecteurActivite(@RequestBody SecteurActivite sa) {
-		SecteurActivite secteurActivite = secteurActiviteService.addSecteurActivite(sa);
-		return secteurActivite;
+		SecteurActivite secteurActivite = modelMapper.map(sa,SecteurActivite.class   );
+		return secteurActiviteService.addSecteurActivite (secteurActivite);
 	}
+	
+
+
 
 	// http://localhost:8089/SpringMVC/secteurActivite/remove-secteurActivite/{secteurActivite-id}
 	@DeleteMapping("/remove-secteurActivite/{secteurActivite-id}")
@@ -52,8 +59,10 @@ public class SecteurActiviteController {
 	@PutMapping("/modify-secteurActivite")
 	@ResponseBody
 	public SecteurActivite modifySecteurActivite(@RequestBody SecteurActivite secteurActivite) {
-		return secteurActiviteService.updateSecteurActivite(secteurActivite);
+		SecteurActivite secteurActivite2 = modelMapper.map(secteurActivite,  SecteurActivite.class);
+		return secteurActiviteService.updateSecteurActivite(secteurActivite2);
 	}
+	
 
 	
 }
