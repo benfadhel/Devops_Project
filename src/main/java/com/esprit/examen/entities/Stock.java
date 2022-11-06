@@ -9,10 +9,11 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+@Data
 @Entity
 @Getter
 @Setter
