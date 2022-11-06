@@ -1,9 +1,13 @@
 package com.esprit.examen.controllers;
 
 import java.util.Date;
+
 import java.util.List;
 
-import com.esprit.examen.entities.Facture;
+import com.esprit.examen.dto.ReglementDTO;
+
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -21,15 +25,19 @@ public class ReglementRestController {
 
     @Autowired
     IReglementService reglementService;
-
+	@Autowired
+	private ModelMapper modelMapper;
+	
 
     // http://localhost:8089/SpringMVC/reglement/add-reglement
     @PostMapping("/add-reglement")
     @ResponseBody
-    public Reglement addReglement(@RequestBody Reglement r) {
-        Reglement reglement = reglementService.addReglement(r);
-        return reglement;
+    public Reglement addReglement(@RequestBody ReglementDTO r) {
+        Reglement reglement = modelMapper.map(r,Reglement.class);
+        return reglementService.addReglement(reglement);
     }
+
+	
     @GetMapping("/retrieve-all-reglements")
     @ResponseBody
     public List<Reglement> getReglement() {

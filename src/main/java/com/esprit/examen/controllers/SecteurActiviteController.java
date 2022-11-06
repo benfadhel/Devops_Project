@@ -1,6 +1,7 @@
 package com.esprit.examen.controllers;
 
 import java.util.List;
+
 import org.modelmapper.ModelMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,7 @@ public class SecteurActiviteController {
 		SecteurActivite secteurActivite = modelMapper.map(sa,SecteurActivite.class   );
 		return secteurActiviteService.addSecteurActivite (secteurActivite);
 	}
+	
 	
 
 

@@ -2,8 +2,11 @@ package com.esprit.examen.controllers;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import com.esprit.examen.dto.OperateurDTO;
 import com.esprit.examen.entities.Operateur;
 import com.esprit.examen.services.IOperateurService;
 
@@ -17,6 +20,9 @@ public class OperateurController {
 
 	@Autowired
 	IOperateurService operateurService;
+	@Autowired
+	private ModelMapper modelMapper;
+	
 	
 	// http://localhost:8089/SpringMVC/operateur/retrieve-all-operateurs
 	@GetMapping("/retrieve-all-operateurs")
@@ -36,11 +42,14 @@ public class OperateurController {
 	// http://localhost:8089/SpringMVC/operateur/add-operateur
 	@PostMapping("/add-operateur")
 	@ResponseBody
-	public Operateur addOperateur(@RequestBody Operateur op) {
-		Operateur operateur = operateurService.addOperateur(op);
-		return operateur;
+	public Operateur addOperateur(@RequestBody OperateurDTO op) {
+		Operateur operateur =modelMapper.map(op,Operateur.class);
+		return  operateurService.addOperateur(operateur);
 	}
 
+	
+    
+	
 	// http://localhost:8089/SpringMVC/operateur/remove-operateur/{operateur-id}
 	@DeleteMapping("/remove-operateur/{operateur-id}")
 	@ResponseBody
@@ -51,9 +60,11 @@ public class OperateurController {
 	// http://localhost:8089/SpringMVC/operateur/modify-operateur
 	@PutMapping("/modify-operateur")
 	@ResponseBody
-	public Operateur modifyOperateur(@RequestBody Operateur operateur) {
-		return operateurService.updateOperateur(operateur);
+	public Operateur modifyOperateur(@RequestBody Operateur p) {
+		Operateur OperateurO =modelMapper.map(p,  Operateur.class);
+		return operateurService.updateOperateur(OperateurO);
 	}
 
 	
+
 }

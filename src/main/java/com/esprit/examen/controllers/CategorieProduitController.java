@@ -2,6 +2,7 @@ package com.esprit.examen.controllers;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.esprit.examen.dto.CategorieProDTO;
 import com.esprit.examen.entities.CategorieProduit;
 import com.esprit.examen.services.ICategorieProduitService;
 import io.swagger.annotations.Api;
@@ -23,6 +26,8 @@ public class CategorieProduitController {
 
 	@Autowired
 	ICategorieProduitService categorieProduitService;
+	@Autowired
+	private ModelMapper modelMapper;
 	
 	// http://localhost:8089/SpringMVC/categorieProduit/retrieve-all-categorieProduit
 	@GetMapping("/retrieve-all-categorieProduit")
@@ -42,9 +47,9 @@ public class CategorieProduitController {
 	// http://localhost:8089/SpringMVC/categorieProduit/add-categorieProduit
 	@PostMapping("/add-categorieProduit")
 	@ResponseBody
-	public CategorieProduit addCategorieProduit(@RequestBody CategorieProduit cp) {
-		CategorieProduit categorieProduit = categorieProduitService.addCategorieProduit(cp);
-		return categorieProduit;
+	public CategorieProduit addCategorieProduit(@RequestBody CategorieProDTO cp) {
+		CategorieProduit categorieProduit = modelMapper.map(cp,CategorieProduit.class);
+		return categorieProduitService.addCategorieProduit(categorieProduit);
 	}
 
 	// http://localhost:8089/SpringMVC/categorieProduit/remove-categorieProduit/{categorieProduit-id}
@@ -57,7 +62,8 @@ public class CategorieProduitController {
 	// http://localhost:8089/SpringMVC/categorieProduit/modify-categorieProduit
 	@PutMapping("/modify-categorieProduit")
 	@ResponseBody
-	public CategorieProduit modifyCategorieProduit(@RequestBody CategorieProduit categorieProduit) {
+	public CategorieProduit modifyCategorieProduit(@RequestBody CategorieProDTO cp) {
+		CategorieProduit  categorieProduit =modelMapper.map(cp,  CategorieProduit.class);
 		return categorieProduitService.updateCategorieProduit(categorieProduit);
 	}
 

@@ -1,6 +1,8 @@
 package com.esprit.examen.controllers;
 
 import java.util.List;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.esprit.examen.dto.FournisseurDTO;
 import com.esprit.examen.entities.Fournisseur;
 import com.esprit.examen.services.IFournisseurService;
 
@@ -24,7 +28,9 @@ public class FournisseurRestController {
 
 	@Autowired
 	IFournisseurService fournisseurService;
-
+	@Autowired
+	private ModelMapper modelMapper;
+	
 	// http://localhost:8089/SpringMVC/fournisseur/retrieve-all-fournisseurs
 	@GetMapping("/retrieve-all-fournisseurs")
 	@ResponseBody
@@ -43,10 +49,11 @@ public class FournisseurRestController {
 	// http://localhost:8089/SpringMVC/fournisseur/add-fournisseur
 	@PostMapping("/add-fournisseur")
 	@ResponseBody
-	public Fournisseur addFournisseur(@RequestBody Fournisseur f) {
-		Fournisseur fournisseur = fournisseurService.addFournisseur(f);
-		return fournisseur;
+	public Fournisseur addFournisseur(@RequestBody FournisseurDTO f) {
+		Fournisseur fournisseur = modelMapper.map(f,Fournisseur.class);
+		return  fournisseurService.addFournisseur(fournisseur);
 	}
+
 
 	// http://localhost:8089/SpringMVC/fournisseur/remove-fournisseur/{fournisseur-id}
 	@DeleteMapping("/remove-fournisseur/{fournisseur-id}")
@@ -58,10 +65,14 @@ public class FournisseurRestController {
 	// http://localhost:8089/SpringMVC/fournisseur/modify-fournisseur
 	@PutMapping("/modify-fournisseur")
 	@ResponseBody
-	public Fournisseur modifyFournisseur(@RequestBody Fournisseur fournisseur) {
+	public Fournisseur modifyFournisseur(@RequestBody FournisseurDTO f) {
+		Fournisseur fournisseur = modelMapper.map(f,  Fournisseur.class);
+	
 		return fournisseurService.updateFournisseur(fournisseur);
 	}
+	
 
+		
 	// http://localhost:8089/SpringMVC/fournisseur/assignSecteurActiviteToFournisseur/1/5
 		@PutMapping(value = "/assignSecteurActiviteToFournisseur/{idSecteurActivite}/{idFournisseur}")
 		public void assignProduitToStock(@PathVariable("idSecteurActivite") Long idSecteurActivite, @PathVariable("idFournisseur") Long idFournisseur) {
