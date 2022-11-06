@@ -4,11 +4,12 @@ package com.esprit.examen.controllers;
 
 import java.util.List;
 
-import com.esprit.examen.entities.Stock;
+import com.esprit.examen.dto.StockDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import com.esprit.examen.entities.Stock;
 import com.esprit.examen.services.IStockService;
 
 import io.swagger.annotations.Api;
@@ -40,7 +41,7 @@ public class StockRestController {
 
 	@PostMapping("/add-stock")
 	@ResponseBody
-	public Stock addStock(@RequestBody Stock s) {
+	public Stock addStock(@RequestBody StockDTO s) {
 		Stock persistentStock = modelMapper.map(s,Stock.class);
 
 		return  stockService.addStock( persistentStock);
@@ -56,11 +57,14 @@ public class StockRestController {
 
 	@PutMapping("/modify-stock")
 	@ResponseBody
-	public Stock modifyStock(@RequestBody Stock stock) {
+	public Stock modifyStock(@RequestBody StockDTO stock) {
 		Stock persistentStock = modelMapper.map(stock,  Stock.class);
 
 		return  stockService.updateStock( persistentStock);
 	}
+
+
+
 
 	/*
 	 * Spring Scheduler : Comparer QteMin tolérée (à ne pa dépasser) avec
